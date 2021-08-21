@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.binu.myflightservices.repositories.PassengerRepository;
 import com.binu.myflightservices.repositories.ReservationRepository;
 
 @RestController
+@CrossOrigin  // use this annotation to prevent cross site origin errors since backend and front end run on different ports
 public class ReservationRestController {
 
 	@Autowired
