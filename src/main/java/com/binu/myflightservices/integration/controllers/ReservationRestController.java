@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.binu.myflightservices.dto.CreateReservationRequest;
+import com.binu.myflightservices.dto.UpdateReservationRequest;
 import com.binu.myflightservices.entities.Flight;
 import com.binu.myflightservices.entities.Passenger;
 import com.binu.myflightservices.entities.Reservation;
@@ -60,10 +61,27 @@ public class ReservationRestController {
 
 	}
 
+	/**
+	 * Method to find a reservation by id
+	 * @param id
+	 * @return Reservation
+	 */
 	@RequestMapping(value = "/reservations/{id}", method = RequestMethod.GET)
 	public Reservation findReservation(@PathVariable("id") int id) {
 
 		return reservationRepository.findById(id).get();
+	}
+	
+	@RequestMapping(value="/reservations",method=RequestMethod.PUT)
+	public Reservation updateReservation(UpdateReservationRequest request) {
+		
+		Reservation reservation = reservationRepository.findById(request.getReservationId()).get();
+		reservation.setNumberOfBags(request.getNumberOfBags());
+		reservation.setCheckedIn(request.getCheckInFlag());
+		
+		// save the reservation and return the saved reservation to caller
+		return reservationRepository.save(reservation);
+		
 	}
 
 }
