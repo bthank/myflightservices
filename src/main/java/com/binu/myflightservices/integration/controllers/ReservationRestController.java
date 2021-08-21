@@ -24,7 +24,8 @@ import com.binu.myflightservices.repositories.PassengerRepository;
 import com.binu.myflightservices.repositories.ReservationRepository;
 
 @RestController
-@CrossOrigin  // use this annotation to prevent cross site origin errors since backend and front end run on different ports
+//use this annotation to prevent cross site origin errors since backend and front end run on different ports
+//@CrossOrigin(origins="http://localhost:3000")  
 public class ReservationRestController {
 
 	@Autowired
@@ -42,6 +43,7 @@ public class ReservationRestController {
 	 * @return list of flights
 	 */
 	@RequestMapping(value = "/flights", method = RequestMethod.GET)
+	@CrossOrigin
 	public List<Flight> findFlights(@RequestParam("from")String from, 
 			@RequestParam("to")String to, 
 			@RequestParam("departureDate") @DateTimeFormat(pattern="MM-dd-yyyy") Date departureDate) {
@@ -50,6 +52,7 @@ public class ReservationRestController {
 	}
 	
 	@RequestMapping(value="/flights/{id}", method=RequestMethod.GET)
+	@CrossOrigin
 	public Flight findFlight(@PathVariable("id")int id) {
 		
 		return flightRepository.findById(id).get();
