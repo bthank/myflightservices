@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,13 @@ public class ReservationRestController {
 	@Autowired
 	ReservationRepository reservationRepository;
 
+	/**
+	 * Method that returns all flights matching criteria entered
+	 * @param from
+	 * @param to
+	 * @param departureDate
+	 * @return list of flights
+	 */
 	@RequestMapping(value = "/flights", method = RequestMethod.GET)
 	public List<Flight> findFlights(@RequestParam("from")String from, 
 			@RequestParam("to")String to, 
@@ -38,10 +46,24 @@ public class ReservationRestController {
 
 		return flightRepository.findFlights(from, to, departureDate);
 	}
-
+	
+	@RequestMapping(value="/flights/{id}", method=RequestMethod.GET)
+	public Flight findFlight(@PathVariable("id")int id) {
+		
+		return flightRepository.findById(id).get();
+		
+	}
+	
+	
+	/**
+	 * Method that saves a reservation
+	 * @param request
+	 * @return Reservation
+	 */
 	@RequestMapping(value = "/reservations", method = RequestMethod.POST)
 	@Transactional // this will cause a rollback if one of the saves fails; all or none
-	public Reservation saveReservation(CreateReservationRequest request) {
+	//@RequestBody is needed so that Spring will serialize the incoming JSON request into this Java object 
+	public Reservation saveReservation(@RequestBody CreateReservationRequest request) {
 
 		Flight flight = flightRepository.findById(request.getFlightId()).get();
 		Passenger passenger = new Passenger();
@@ -78,7 +100,7 @@ public class ReservationRestController {
 	}
 	
 	@RequestMapping(value="/reservations",method=RequestMethod.PUT)
-	public Reservation updateReservation(UpdateReservationRequest request) {
+	public Reservation updateReservation(@RequestBody UpdateReservationRequest request) {
 		
 		Reservation reservation = reservationRepository.findById(request.getReservationId()).get();
 		reservation.setNumberOfBags(request.getNumberOfBags());
