@@ -3,6 +3,7 @@ package com.binu.myflightservices.integration.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ public class ReservationRestController {
 	}
 	
 	@RequestMapping(value="/reservations",method=RequestMethod.POST)
+	@Transactional // this will cause a rollback if one of the saves fails; all or none
 	public Reservation saveReservation(CreateReservationRequest request) {
 		
 		Flight flight = flightRepository.findById(request.getFlightId()).get();
