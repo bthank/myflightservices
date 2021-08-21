@@ -1,12 +1,15 @@
 package com.binu.myflightservices.integration.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.binu.myflightservices.dto.CreateReservationRequest;
@@ -29,9 +32,11 @@ public class ReservationRestController {
 	ReservationRepository reservationRepository;
 
 	@RequestMapping(value = "/flights", method = RequestMethod.GET)
-	public List<Flight> findFlights() {
+	public List<Flight> findFlights(@RequestParam("from")String from, 
+			@RequestParam("to")String to, 
+			@RequestParam("departureDate") @DateTimeFormat(pattern="MM-dd-yyyy") Date departureDate) {
 
-		return flightRepository.findAll();
+		return flightRepository.findFlights(from, to, departureDate);
 	}
 
 	@RequestMapping(value = "/reservations", method = RequestMethod.POST)
