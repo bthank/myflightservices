@@ -1,18 +1,20 @@
 package com.binu.myflightservices.entities;
 
-public class Reservation {
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-	private int id;
+@Entity
+public class Reservation extends AbstractEntity {
+
 	private Boolean checkedIn;
 	private int numberOfBags;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	// each reservation will only have one flight and one passenger associated with
+	// it
+	@OneToOne
+	private Flight flight;
+	@OneToOne
+	private Passenger passenger;
 
 	public Boolean getCheckedIn() {
 		return checkedIn;
@@ -28,6 +30,22 @@ public class Reservation {
 
 	public void setNumberOfBags(int numberOfBags) {
 		this.numberOfBags = numberOfBags;
+	}
+
+	public Flight getFlight() {
+		return flight;
+	}
+
+	public void setFlight(Flight flight) {
+		this.flight = flight;
+	}
+
+	public Passenger getPassenger() {
+		return passenger;
+	}
+
+	public void setPassenger(Passenger passenger) {
+		this.passenger = passenger;
 	}
 
 }
